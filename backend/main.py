@@ -32,6 +32,7 @@ try:
     from backend.models import (
         JobApplicationResponse,
         ApprovalAction,
+        FollowUpAction,
         ExecuteRequest,
         SeedResumeRequest,
         ApplicationStatus
@@ -42,6 +43,7 @@ except ImportError:
     from models import (
         JobApplicationResponse,
         ApprovalAction,
+        FollowUpAction,
         ExecuteRequest,
         SeedResumeRequest,
         ApplicationStatus
@@ -189,6 +191,21 @@ async def reject_application(app_id: str, payload: ApprovalAction):
     })
     return {"success": True, "application_id": app_id, "status": ApplicationStatus.REJECTED.value}
 
+@app.post("/api/applications/{app_id}/followup")
+async def schedule_follow_up(app_id: str, payload: FollowUpAction):
+    """Schedules or updates application follow-up reminder."""
+    app_data = await database.get_job_application(app_id)
+    if not app_data:
+        raise HTTPException(status_code=404, detail="Job application not found")
+
+    updates = {
+        "follow_up_date": payload.follow_up_date,
+        "follow_up_status": payload.status or "scheduled",
+        "follow_up_notes": payload.notes
+    }
+    await database.update_job_application(app_id, updates)
+    return {"success": True, "application_id": app_id, "follow_up": updates}
+
 @app.post("/api/applications/{app_id}/execute")
 async def execute_playwright_automation(app_id: str, background_tasks: BackgroundTasks):
     """Triggers Playwright execution agent for approved application."""
@@ -213,11 +230,17 @@ async def execute_playwright_automation(app_id: str, background_tasks: Backgroun
             }
             res = await executor_node(state)
             
+            # Default follow-up date to 7 days after submission
+            follow_up_default = (__import__('datetime').datetime.utcnow() + __import__('datetime').timedelta(days=7)).strftime("%Y-%m-%d")
+
             updates = {
                 "status": res.get("status", ApplicationStatus.APPLIED.value),
                 "execution_logs": res.get("execution_logs", []),
                 "screenshot_url": res.get("screenshot_url"),
-                "submitted_at": res.get("submitted_at")
+                "submitted_at": res.get("submitted_at"),
+                "follow_up_date": app_data.get("follow_up_date") or follow_up_default,
+                "follow_up_status": app_data.get("follow_up_status") or "scheduled",
+                "follow_up_notes": "Follow up with recruiter/hiring manager on application progress"
             }
             await database.update_job_application(app_id, updates)
         except Exception as e:

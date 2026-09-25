@@ -73,6 +73,11 @@ class ApprovalAction(BaseModel):
     edited_cover_letter: Optional[str] = None
     edited_bullets: Optional[List[BulletPointModification]] = None
 
+class FollowUpAction(BaseModel):
+    follow_up_date: Optional[str] = None
+    notes: Optional[str] = None
+    status: Optional[str] = "scheduled"
+
 class ExecuteRequest(BaseModel):
     application_id: str
     headless: bool = True
@@ -101,9 +106,13 @@ class JobApplicationResponse(BaseModel):
     execution_logs: Optional[List[Dict[str, Any]]] = None
     screenshot_url: Optional[str] = None
     submitted_at: Optional[datetime] = None
+    follow_up_date: Optional[str] = None
+    follow_up_status: Optional[str] = None
+    follow_up_notes: Optional[str] = None
     error_message: Optional[str] = None
     created_at: datetime
     updated_at: datetime
 
 class SeedResumeRequest(BaseModel):
-    candidate_profile: CandidateProfile
+    chunks: List[ResumeChunk] = Field(default_factory=list)
+    master_text: Optional[str] = None

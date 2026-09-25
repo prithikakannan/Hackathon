@@ -60,7 +60,21 @@ export interface JobApplication {
   execution_logs?: ExecutionLog[];
   screenshot_url?: string;
   submitted_at?: string;
+  follow_up_date?: string;
+  follow_up_status?: 'scheduled' | 'completed' | 'overdue';
+  follow_up_notes?: string;
   error_message?: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface CandidateProfile {
+  full_name: string;
+  email: string;
+  phone: string;
+  linkedin_url?: string;
+  github_url?: string;
+  portfolio_url?: string;
+  location: string;
+  master_resume_text: string;
 }
