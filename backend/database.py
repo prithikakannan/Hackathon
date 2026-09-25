@@ -24,18 +24,20 @@ except ImportError:
 
 logger = logging.getLogger(__name__)
 
-# Initialize Supabase Client if credentials are provided
+# Track Supabase Availability
 supabase: Optional[Client] = None
+supabase_tables_exist: bool = True
+
 try:
-    if settings.SUPABASE_URL and settings.SUPABASE_KEY and "xyzcompany" not in settings.SUPABASE_URL:
+    if settings.SUPABASE_URL and settings.SUPABASE_KEY and "your-supabase-project" not in settings.SUPABASE_URL and "xyzcompany" not in settings.SUPABASE_URL:
         supabase = create_client(settings.SUPABASE_URL, settings.SUPABASE_KEY)
         logger.info("Supabase client initialized successfully.")
     else:
-        logger.warning("Supabase credentials not set or using placeholder. Fallback in-memory/mock storage enabled.")
+        logger.info("Supabase credentials not set or using placeholder. Local database mode active.")
 except Exception as e:
-    logger.error(f"Failed to initialize Supabase client: {e}")
+    logger.warning(f"Failed to initialize Supabase client: {e}. Local fallback enabled.")
 
-# In-memory storage fallback for local development & testing without live Supabase
+# Synchronized Local Storage
 _in_memory_db: Dict[str, Dict[str, Any]] = {}
 _in_memory_resume_chunks: List[Dict[str, Any]] = []
 
@@ -43,7 +45,7 @@ async def get_embedding(text: str) -> List[float]:
     """Generates text embedding vector using OpenAI, Gemini or deterministic fallback."""
     text_clean = text.replace("\n", " ").strip()
     
-    if settings.OPENAI_API_KEY:
+    if settings.OPENAI_API_KEY and "your_openai_api_key" not in settings.OPENAI_API_KEY:
         try:
             import openai
             client = openai.AsyncOpenAI(api_key=settings.OPENAI_API_KEY)
@@ -53,9 +55,9 @@ async def get_embedding(text: str) -> List[float]:
             )
             return res.data[0].embedding
         except Exception as err:
-            logger.warning(f"OpenAI embedding generation failed, using mock embedding: {err}")
+            logger.warning(f"OpenAI embedding generation failed, using fallback vector: {err}")
 
-    if settings.GEMINI_API_KEY:
+    if settings.GEMINI_API_KEY and "your_gemini_api_key" not in settings.GEMINI_API_KEY:
         try:
             import google.generativeai as genai
             genai.configure(api_key=settings.GEMINI_API_KEY)
@@ -64,7 +66,6 @@ async def get_embedding(text: str) -> List[float]:
                 content=text_clean
             )
             emb = result['embedding']
-            # Resize or pad to 1536 if necessary for consistency
             if len(emb) < 1536:
                 emb = emb + [0.0] * (1536 - len(emb))
             return emb[:1536]
@@ -72,19 +73,17 @@ async def get_embedding(text: str) -> List[float]:
             logger.warning(f"Gemini embedding generation failed: {err}")
 
     # Deterministic fallback vector generation based on character frequencies (1536 dimensions)
-    logger.info("Using deterministic vector embedding generator for local execution.")
     import math
     vec = [0.0] * 1536
     for i, char in enumerate(text_clean[:1536]):
         idx = (ord(char) * (i + 1)) % 1536
         vec[idx] += math.sin(i) * 0.1
-    # Normalize vector
     norm = math.sqrt(sum(x*x for x in vec)) or 1.0
     return [x / norm for x in vec]
 
 async def save_master_resume_chunks(chunks: List[Dict[str, Any]]) -> bool:
-    """Embeds and saves master resume chunks to pgvector database."""
-    global _in_memory_resume_chunks
+    """Embeds and saves master resume chunks."""
+    global _in_memory_resume_chunks, supabase_tables_exist
     processed_chunks = []
     
     for idx, chunk in enumerate(chunks):
@@ -103,24 +102,28 @@ async def save_master_resume_chunks(chunks: List[Dict[str, Any]]) -> bool:
         processed_chunks.append(row)
         _in_memory_resume_chunks.append(row)
 
-    if supabase:
+    if supabase and supabase_tables_exist:
         try:
-            # Delete existing resume chunks first
             supabase.table("master_resume_chunks").delete().neq("chunk_index", -1).execute()
             supabase.table("master_resume_chunks").insert(processed_chunks).execute()
             logger.info(f"Successfully inserted {len(processed_chunks)} resume chunks into Supabase pgvector.")
             return True
         except Exception as e:
-            logger.error(f"Error inserting into Supabase master_resume_chunks: {e}")
+            if "PGRST205" in str(e) or "Could not find the table" in str(e):
+                logger.warning("Supabase table 'master_resume_chunks' not found. Using local in-memory storage.")
+                supabase_tables_exist = False
+            else:
+                logger.error(f"Error inserting into Supabase master_resume_chunks: {e}")
     
-    logger.info(f"Stored {len(processed_chunks)} resume chunks in memory.")
+    logger.info(f"Stored {len(processed_chunks)} resume chunks in local database.")
     return True
 
 async def search_resume_chunks(query_text: str, top_k: int = 5) -> List[ResumeChunk]:
-    """Queries master resume chunks using vector cosine similarity via RPC."""
+    """Queries master resume chunks using vector cosine similarity via RPC or local calculation."""
+    global supabase_tables_exist
     query_vector = await get_embedding(query_text)
     
-    if supabase:
+    if supabase and supabase_tables_exist:
         try:
             response = supabase.rpc(
                 "match_resume_chunks",
@@ -143,9 +146,11 @@ async def search_resume_chunks(query_text: str, top_k: int = 5) -> List[ResumeCh
                 ))
             return results
         except Exception as e:
-            logger.error(f"Supabase RPC match_resume_chunks failed: {e}. Falling back to in-memory vector search.")
+            if "PGRST205" in str(e) or "Could not find" in str(e):
+                supabase_tables_exist = False
+            logger.info("Using local vector search fallback for resume matching.")
 
-    # In-memory vector similarity calculation fallback
+    # Local vector similarity calculation fallback
     import math
     def cosine_similarity(v1, v2):
         dot = sum(a * b for a, b in zip(v1, v2))
@@ -174,53 +179,70 @@ async def search_resume_chunks(query_text: str, top_k: int = 5) -> List[ResumeCh
 
 async def save_job_application(record: Dict[str, Any]) -> str:
     """Creates a new job application record."""
+    global supabase_tables_exist
     import uuid
     app_id = record.get("id") or str(uuid.uuid4())
     record["id"] = app_id
+    _in_memory_db[app_id] = record
     
-    if supabase:
+    if supabase and supabase_tables_exist:
         try:
             supabase.table("job_applications").insert(record).execute()
             return app_id
         except Exception as e:
-            logger.error(f"Failed to insert into Supabase job_applications: {e}")
+            if "PGRST205" in str(e) or "Could not find the table" in str(e):
+                logger.warning("Supabase table 'job_applications' not found in schema cache. Using local synchronized database.")
+                supabase_tables_exist = False
+            else:
+                logger.error(f"Failed to insert into Supabase job_applications: {e}")
             
-    _in_memory_db[app_id] = record
     return app_id
 
 async def update_job_application(app_id: str, updates: Dict[str, Any]) -> bool:
     """Updates an existing job application record."""
-    if supabase:
+    global supabase_tables_exist
+    if app_id in _in_memory_db:
+        _in_memory_db[app_id].update(updates)
+        
+    if supabase and supabase_tables_exist:
         try:
             supabase.table("job_applications").update(updates).eq("id", app_id).execute()
             return True
         except Exception as e:
-            logger.error(f"Failed to update Supabase job_application {app_id}: {e}")
+            if "PGRST205" in str(e) or "Could not find the table" in str(e):
+                supabase_tables_exist = False
+            else:
+                logger.error(f"Failed to update Supabase job_application {app_id}: {e}")
             
-    if app_id in _in_memory_db:
-        _in_memory_db[app_id].update(updates)
-        return True
-    return False
+    return app_id in _in_memory_db
 
 async def get_job_application(app_id: str) -> Optional[Dict[str, Any]]:
     """Retrieves job application record by ID."""
-    if supabase:
+    global supabase_tables_exist
+    if supabase and supabase_tables_exist:
         try:
             res = supabase.table("job_applications").select("*").eq("id", app_id).execute()
             if res.data:
                 return res.data[0]
         except Exception as e:
-            logger.error(f"Error fetching job application from Supabase: {e}")
+            if "PGRST205" in str(e) or "Could not find the table" in str(e):
+                supabase_tables_exist = False
+            else:
+                logger.error(f"Error fetching job application from Supabase: {e}")
             
     return _in_memory_db.get(app_id)
 
 async def list_job_applications() -> List[Dict[str, Any]]:
     """Lists all job applications."""
-    if supabase:
+    global supabase_tables_exist
+    if supabase and supabase_tables_exist:
         try:
             res = supabase.table("job_applications").select("*").order("created_at", desc=True).execute()
             return res.data
         except Exception as e:
-            logger.error(f"Error listing job applications from Supabase: {e}")
+            if "PGRST205" in str(e) or "Could not find the table" in str(e):
+                supabase_tables_exist = False
+            else:
+                logger.error(f"Error listing job applications from Supabase: {e}")
             
     return list(_in_memory_db.values())
