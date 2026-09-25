@@ -53,32 +53,32 @@ export const NewJobModal: React.FC<NewJobModalProps> = ({ isOpen, onClose, onSub
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
-      <div className="glass-modal rounded-3xl w-full max-w-lg p-7 shadow-2xl relative border border-slate-700/80 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
+      <div className="glass-modal rounded-3xl w-full max-w-lg p-7 shadow-2xl relative border border-slate-200 overflow-hidden bg-white">
         
-        {/* Subtle Ambient Glow */}
+        {/* Subtle Ambient Accent */}
         <div className="absolute -top-20 -right-20 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none" />
         
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 p-2 text-slate-400 hover:text-white rounded-full bg-slate-800/60 hover:bg-slate-800 transition-colors"
+          className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-700 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="flex items-center gap-3.5 mb-6">
-          <div className="p-3 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-sky-500/20 text-indigo-400 border border-indigo-500/30 glow-indigo">
+          <div className="p-3 rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-200 glow-indigo">
             <Sparkles className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-black text-slate-100 font-display">Scout New Job Posting</h2>
-            <p className="text-xs text-slate-400 mt-0.5">Scout agent parses description, evaluates RAG fit & drafts materials.</p>
+            <h2 className="text-xl font-black text-slate-900 font-display">Scout New Job Posting</h2>
+            <p className="text-xs text-slate-500 mt-0.5">Scout agent parses description, evaluates RAG fit & drafts materials.</p>
           </div>
         </div>
 
         {/* Preset Sample URLs for Quick Testing */}
-        <div className="mb-5 bg-slate-900/60 rounded-2xl p-3.5 border border-slate-800 space-y-2">
-          <span className="text-[10px] font-extrabold text-indigo-400 uppercase tracking-wider block">
+        <div className="mb-5 bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 space-y-2">
+          <span className="text-[10px] font-extrabold text-indigo-600 uppercase tracking-wider block">
             Quick Test Presets
           </span>
           <div className="flex flex-wrap gap-2">
@@ -89,7 +89,7 @@ export const NewJobModal: React.FC<NewJobModalProps> = ({ isOpen, onClose, onSub
                 'Senior Staff AI / Software Engineer',
                 'Stripe'
               )}
-              className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-slate-800 hover:bg-indigo-600/20 hover:border-indigo-500/40 text-slate-300 hover:text-indigo-300 border border-slate-700 transition-all"
+              className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-white hover:bg-indigo-50 text-slate-700 hover:text-indigo-700 border border-slate-200 hover:border-indigo-200 transition-all shadow-2xs"
             >
               ⚡ Stripe (Greenhouse)
             </button>
@@ -100,7 +100,7 @@ export const NewJobModal: React.FC<NewJobModalProps> = ({ isOpen, onClose, onSub
                 'Full-Stack AI Platform Lead',
                 'Anthropic'
               )}
-              className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-slate-800 hover:bg-sky-600/20 hover:border-sky-500/40 text-slate-300 hover:text-sky-300 border border-slate-700 transition-all"
+              className="px-2.5 py-1 text-[11px] font-semibold rounded-lg bg-white hover:bg-sky-50 text-slate-700 hover:text-sky-700 border border-slate-200 hover:border-sky-200 transition-all shadow-2xs"
             >
               🚀 Anthropic (Lever)
             </button>
@@ -110,15 +110,15 @@ export const NewJobModal: React.FC<NewJobModalProps> = ({ isOpen, onClose, onSub
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="text-xs font-bold text-slate-200 flex items-center gap-1.5">
-                <LinkIcon className="w-3.5 h-3.5 text-sky-400" /> Target Job Posting URL *
+              <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                <LinkIcon className="w-3.5 h-3.5 text-indigo-600" /> Target Job Posting URL *
               </label>
               <button
                 type="button"
                 onClick={handlePasteClipboard}
-                className="text-[11px] text-sky-400 hover:text-sky-300 flex items-center gap-1 font-semibold"
+                className="text-[11px] text-indigo-600 hover:text-indigo-700 flex items-center gap-1 font-semibold"
               >
-                {copied ? <Check className="w-3 h-3 text-emerald-400" /> : <Clipboard className="w-3 h-3" />}
+                {copied ? <Check className="w-3 h-3 text-emerald-600" /> : <Clipboard className="w-3 h-3" />}
                 {copied ? 'Pasted!' : 'Paste Clipboard'}
               </button>
             </div>
@@ -128,49 +128,49 @@ export const NewJobModal: React.FC<NewJobModalProps> = ({ isOpen, onClose, onSub
               placeholder="e.g. https://company.greenhouse.io/jobs/12345"
               value={jobUrl}
               onChange={(e) => setJobUrl(e.target.value)}
-              className="w-full px-4 py-3 rounded-xl bg-slate-900/90 border border-slate-700 text-slate-100 placeholder-slate-500 text-xs font-mono focus:outline-none focus:border-indigo-500 transition-colors shadow-inner"
+              className="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs font-mono focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100 transition-all"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3.5">
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <Briefcase className="w-3.5 h-3.5 text-indigo-400" /> Job Title (Optional)
+              <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                <Briefcase className="w-3.5 h-3.5 text-indigo-600" /> Job Title (Optional)
               </label>
               <input
                 type="text"
                 placeholder="e.g. AI Systems Engineer"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100 transition-all"
               />
             </div>
             <div>
-              <label className="block text-xs font-bold text-slate-300 mb-1.5 flex items-center gap-1.5">
-                <Building className="w-3.5 h-3.5 text-indigo-400" /> Company (Optional)
+              <label className="block text-xs font-bold text-slate-700 mb-1.5 flex items-center gap-1.5">
+                <Building className="w-3.5 h-3.5 text-indigo-600" /> Company (Optional)
               </label>
               <input
                 type="text"
                 placeholder="e.g. Austral Tech"
                 value={company}
                 onChange={(e) => setCompany(e.target.value)}
-                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-900/90 border border-slate-700 text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:border-indigo-500 transition-colors"
+                className="w-full px-3.5 py-2.5 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 placeholder-slate-400 text-xs focus:outline-none focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-100 transition-all"
               />
             </div>
           </div>
 
-          <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-800">
+          <div className="pt-4 flex items-center justify-end gap-3 border-t border-slate-200">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl text-slate-300 hover:text-white text-xs font-bold hover:bg-slate-800 transition-colors"
+              className="px-4 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 text-xs font-bold hover:bg-slate-100 transition-colors"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={loading || !jobUrl.trim()}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-500 via-sky-500 to-indigo-600 hover:from-indigo-400 hover:to-sky-400 text-white text-xs font-black shadow-lg shadow-indigo-500/25 transition-all disabled:opacity-50 hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 via-sky-600 to-indigo-700 hover:from-indigo-500 hover:to-sky-500 text-white text-xs font-black shadow-lg shadow-indigo-500/20 transition-all disabled:opacity-50 hover:scale-[1.02]"
             >
               {loading ? (
                 <>Scouting Job Post...</>
@@ -187,4 +187,3 @@ export const NewJobModal: React.FC<NewJobModalProps> = ({ isOpen, onClose, onSub
     </div>
   );
 };
-

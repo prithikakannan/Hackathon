@@ -8,23 +8,23 @@ interface FitScoreBadgeProps {
 export const FitScoreBadge: React.FC<FitScoreBadgeProps> = ({ score, size = 'md' }) => {
   if (score === undefined || score === null) {
     return (
-      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-900/80 text-slate-400 border border-slate-800">
-        <span className="h-1.5 w-1.5 rounded-full bg-slate-500 animate-ping" />
+      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-500 border border-slate-200">
+        <span className="h-1.5 w-1.5 rounded-full bg-slate-400 animate-ping" />
         Evaluating...
       </span>
     );
   }
 
-  let colorClasses = 'bg-rose-500/10 text-rose-400 border-rose-500/30 glow-rose';
+  let colorClasses = 'bg-rose-50 text-rose-700 border-rose-200 shadow-2xs shadow-rose-100';
   let dotColor = 'bg-rose-500';
   let pingColor = 'bg-rose-400';
 
   if (score >= 80) {
-    colorClasses = 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30 glow-emerald';
-    dotColor = 'bg-emerald-500';
+    colorClasses = 'bg-emerald-50 text-emerald-700 border-emerald-200 shadow-2xs shadow-emerald-100';
+    dotColor = 'bg-emerald-600';
     pingColor = 'bg-emerald-400';
   } else if (score >= 60) {
-    colorClasses = 'bg-amber-500/10 text-amber-400 border-amber-500/30 glow-amber';
+    colorClasses = 'bg-amber-50 text-amber-700 border-amber-200 shadow-2xs shadow-amber-100';
     dotColor = 'bg-amber-500';
     pingColor = 'bg-amber-400';
   }
@@ -36,7 +36,7 @@ export const FitScoreBadge: React.FC<FitScoreBadgeProps> = ({ score, size = 'md'
   }[size];
 
   return (
-    <div className={`inline-flex items-center gap-1.5 rounded-full border backdrop-blur-md transition-all ${colorClasses} ${sizeClasses}`}>
+    <div className={`inline-flex items-center gap-1.5 rounded-full border transition-all ${colorClasses} ${sizeClasses}`}>
       <span className="relative flex h-2 w-2 shrink-0">
         <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-75 ${pingColor}`} />
         <span className={`relative inline-flex rounded-full h-2 w-2 ${dotColor}`} />
@@ -45,4 +45,3 @@ export const FitScoreBadge: React.FC<FitScoreBadgeProps> = ({ score, size = 'md'
     </div>
   );
 };
-

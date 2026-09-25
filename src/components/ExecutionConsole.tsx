@@ -18,10 +18,10 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
   const [isScreenshotExpanded, setIsScreenshotExpanded] = useState(false);
 
   return (
-    <div className="bg-slate-950/90 rounded-2xl border border-slate-800 p-6 space-y-5 font-mono shadow-2xl relative overflow-hidden">
+    <div className="bg-slate-900 rounded-2xl border border-slate-800 p-6 space-y-5 font-mono shadow-xl relative overflow-hidden text-slate-100">
       
       {/* Terminal Window Header Chrome */}
-      <div className="flex items-center justify-between border-b border-slate-800/80 pb-4">
+      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-1.5">
             <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
@@ -56,14 +56,14 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
           logs.map((log, i) => (
             <div 
               key={i} 
-              className="flex items-start gap-2.5 text-slate-300 hover:bg-slate-900/80 p-2 rounded-xl transition-all border border-transparent hover:border-slate-800"
+              className="flex items-start gap-2.5 text-slate-300 hover:bg-slate-800/80 p-2 rounded-xl transition-all border border-transparent hover:border-slate-700/60"
             >
               <span className="text-slate-500 text-[10px] shrink-0 pt-0.5">{new Date(log.timestamp).toLocaleTimeString()}</span>
               <span className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                log.status === 'success' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' :
-                log.status === 'failed' ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20' :
-                log.status === 'simulated' ? 'bg-sky-500/10 text-sky-400 border border-sky-500/20' : 
-                'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                log.status === 'success' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30' :
+                log.status === 'failed' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' :
+                log.status === 'simulated' ? 'bg-sky-500/20 text-sky-400 border border-sky-500/30' : 
+                'bg-amber-500/20 text-amber-400 border border-amber-500/30'
               }`}>
                 {log.status.toUpperCase()}
               </span>
@@ -78,7 +78,7 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
 
       {/* Screenshot Verification */}
       {screenshotUrl && (
-        <div className="pt-4 border-t border-slate-800/80 space-y-3 font-sans">
+        <div className="pt-4 border-t border-slate-800 space-y-3 font-sans">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-xs text-slate-300 font-semibold">
               <Image className="w-4 h-4 text-sky-400" /> Playwright Verification Capture
@@ -91,7 +91,7 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
             </button>
           </div>
 
-          <div className={`rounded-xl overflow-hidden border border-slate-800 bg-slate-900 relative transition-all duration-300 ${
+          <div className={`rounded-xl overflow-hidden border border-slate-800 bg-slate-950 relative transition-all duration-300 ${
             isScreenshotExpanded ? 'max-h-none' : 'max-h-56'
           }`}>
             <img
@@ -109,4 +109,3 @@ export const ExecutionConsole: React.FC<ExecutionConsoleProps> = ({
     </div>
   );
 };
-
