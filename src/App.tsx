@@ -165,10 +165,10 @@ export default function App() {
     });
 
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-indigo-500 selection:text-white relative">
+    <div className="h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-indigo-500 selection:text-white overflow-hidden relative">
       
       {/* Global Command Bar Header */}
-      <header className="glass-header sticky top-0 z-40 px-4 md:px-6 h-16 flex items-center justify-between gap-4">
+      <header className="glass-header sticky top-0 z-40 px-4 md:px-6 h-16 flex items-center justify-between gap-4 shrink-0">
         
         {/* Left Brand Identity */}
         <div className="flex items-center gap-3">
@@ -249,10 +249,10 @@ export default function App() {
       </header>
 
       {/* Main Container Layout */}
-      <div className="flex-1 flex overflow-hidden">
+      <div className="flex-1 flex overflow-hidden h-[calc(100vh-4rem)]">
         
-        {/* Sidebar Desktop Navigation */}
-        <aside className="w-72 glass-sidebar shrink-0 p-5 hidden lg:flex flex-col justify-between space-y-6 overflow-y-auto">
+        {/* Fixed Sidebar Desktop Navigation */}
+        <aside className="w-72 glass-sidebar shrink-0 p-5 hidden lg:flex flex-col justify-between space-y-6 overflow-y-auto h-full border-r border-slate-200">
           <div className="space-y-6">
             
             {/* Embedded Quick Ingestion Box */}
@@ -362,7 +362,7 @@ export default function App() {
           </div>
 
           {/* Supabase & Playwright Architecture Box */}
-          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 text-xs space-y-2">
+          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200 text-xs space-y-2 shrink-0">
             <div className="flex items-center justify-between text-emerald-700 font-extrabold text-[11px] uppercase tracking-wider">
               <span className="flex items-center gap-1.5"><Database className="w-3.5 h-3.5 text-emerald-600" /> Supabase RAG</span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
@@ -421,8 +421,8 @@ export default function App() {
           </div>
         )}
 
-        {/* Main Dashboard Workspace */}
-        <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8">
+        {/* Main Dashboard Workspace (Independent Scrollable Container) */}
+        <main className="flex-1 overflow-y-auto p-4 md:p-8 space-y-8 h-full">
           
           {/* Top Metric Cards Summary Row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5">
@@ -558,7 +558,7 @@ export default function App() {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fadeIn">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 animate-fadeIn pb-8">
               {filteredApplications.map((app) => (
                 <ApplicationCard
                   key={app.id}
