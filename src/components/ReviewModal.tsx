@@ -64,43 +64,43 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-lg animate-fadeIn">
-      <div className="glass-modal rounded-3xl w-full max-w-5xl h-[88vh] flex flex-col shadow-2xl relative border border-slate-700/80 overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm animate-fadeIn">
+      <div className="glass-modal rounded-3xl w-full max-w-5xl h-[88vh] flex flex-col shadow-2xl relative border border-slate-200 overflow-hidden bg-white">
         
         {/* Modal Top Header Bar */}
-        <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-900/80 shrink-0">
+        <div className="p-6 border-b border-slate-200 flex items-center justify-between bg-slate-50 shrink-0">
           <div className="space-y-1">
             <div className="flex items-center gap-3">
-              <span className="text-xs font-black text-indigo-400 uppercase tracking-wider">{application.company_name}</span>
+              <span className="text-xs font-black text-indigo-600 uppercase tracking-wider">{application.company_name}</span>
               <FitScoreBadge score={application.fit_score} size="sm" />
               <a
                 href={application.job_url}
                 target="_blank"
                 rel="noreferrer"
-                className="text-[11px] text-sky-400 hover:text-sky-300 font-bold flex items-center gap-1 ml-2"
+                className="text-[11px] text-sky-600 hover:text-sky-700 font-bold flex items-center gap-1 ml-2"
               >
                 Posting <ExternalLink className="w-3 h-3" />
               </a>
             </div>
-            <h2 className="text-xl md:text-2xl font-black text-slate-100 font-display">{application.job_title}</h2>
+            <h2 className="text-xl md:text-2xl font-black text-slate-900 font-display">{application.job_title}</h2>
           </div>
 
           <button
             onClick={onClose}
-            className="p-2 text-slate-400 hover:text-white rounded-full bg-slate-800/80 hover:bg-slate-800 transition-colors"
+            className="p-2 text-slate-400 hover:text-slate-700 rounded-full bg-slate-200/60 hover:bg-slate-200 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-1 px-6 pt-3 border-b border-slate-800/80 bg-slate-900/50 text-xs font-bold shrink-0 overflow-x-auto">
+        <div className="flex items-center gap-1 px-6 pt-3 border-b border-slate-200 bg-slate-50/50 text-xs font-bold shrink-0 overflow-x-auto">
           <button
             onClick={() => setActiveTab('fit')}
             className={`px-4 py-3 rounded-t-xl transition-all border-b-2 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'fit'
-                ? 'border-indigo-500 text-indigo-400 bg-slate-800/60 font-extrabold'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-indigo-600 text-indigo-700 bg-white font-extrabold shadow-2xs'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
             <Cpu className="w-4 h-4" /> RAG Fit Analysis
@@ -110,8 +110,8 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
             onClick={() => setActiveTab('cover')}
             className={`px-4 py-3 rounded-t-xl transition-all border-b-2 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'cover'
-                ? 'border-indigo-500 text-indigo-400 bg-slate-800/60 font-extrabold'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-indigo-600 text-indigo-700 bg-white font-extrabold shadow-2xs'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
             <FileText className="w-4 h-4" /> Tailored Cover Letter
@@ -121,8 +121,8 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
             onClick={() => setActiveTab('bullets')}
             className={`px-4 py-3 rounded-t-xl transition-all border-b-2 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'bullets'
-                ? 'border-indigo-500 text-indigo-400 bg-slate-800/60 font-extrabold'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-indigo-600 text-indigo-700 bg-white font-extrabold shadow-2xs'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
             <Sparkles className="w-4 h-4" /> Resume Bullet Reframing
@@ -132,8 +132,8 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
             onClick={() => setActiveTab('console')}
             className={`px-4 py-3 rounded-t-xl transition-all border-b-2 flex items-center gap-2 whitespace-nowrap ${
               activeTab === 'console'
-                ? 'border-indigo-500 text-indigo-400 bg-slate-800/60 font-extrabold'
-                : 'border-transparent text-slate-400 hover:text-slate-200'
+                ? 'border-indigo-600 text-indigo-700 bg-white font-extrabold shadow-2xs'
+                : 'border-transparent text-slate-500 hover:text-slate-800'
             }`}
           >
             <Eye className="w-4 h-4" /> Playwright Console
@@ -141,55 +141,55 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
         </div>
 
         {/* Modal Main Body */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-6">
+        <div className="flex-1 overflow-y-auto p-6 space-y-6 bg-slate-50/30">
           
           {/* TAB 1: RAG FIT ANALYSIS */}
           {activeTab === 'fit' && (
             <div className="space-y-6 animate-fadeIn">
               
               {/* RAG Alignment Reasoning */}
-              <div className="glass-panel p-6 rounded-2xl border border-slate-800/90 relative overflow-hidden">
+              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-2xs relative overflow-hidden">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xs font-black text-indigo-400 uppercase tracking-wider flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-indigo-400" /> AI Evaluator Alignment Summary
+                  <h3 className="text-xs font-black text-indigo-600 uppercase tracking-wider flex items-center gap-2">
+                    <Sparkles className="w-4 h-4 text-indigo-600" /> AI Evaluator Alignment Summary
                   </h3>
-                  <span className="text-[11px] font-bold text-slate-400 bg-slate-800/80 px-2.5 py-1 rounded-full border border-slate-700/60">
+                  <span className="text-[11px] font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-full border border-slate-200">
                     Master Resume Vector RPC
                   </span>
                 </div>
-                <p className="text-sm text-slate-200 leading-relaxed font-sans">
+                <p className="text-sm text-slate-700 leading-relaxed font-sans">
                   {application.fit_breakdown?.reasoning || 'Evaluating semantic match against master resume...'}
                 </p>
               </div>
 
               {/* Match vs Missing Qualifications Matrix */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="glass-panel p-5 rounded-2xl border border-slate-800/90 space-y-3">
-                  <h4 className="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-emerald-400" /> Matching Qualifications
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+                  <h4 className="text-xs font-black text-emerald-700 uppercase tracking-wider flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Matching Qualifications
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {application.fit_breakdown?.matching_skills?.map((s, idx) => (
-                      <span key={idx} className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-emerald-500/10 text-emerald-300 border border-emerald-500/20 flex items-center gap-1.5">
-                        <Check className="w-3.5 h-3.5 text-emerald-400" /> {s}
+                      <span key={idx} className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5">
+                        <Check className="w-3.5 h-3.5 text-emerald-600" /> {s}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                <div className="glass-panel p-5 rounded-2xl border border-slate-800/90 space-y-3">
-                  <h4 className="text-xs font-black text-rose-400 uppercase tracking-wider flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4 text-rose-400" /> Skill Gaps / Missing Criteria
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+                  <h4 className="text-xs font-black text-rose-700 uppercase tracking-wider flex items-center gap-2">
+                    <AlertCircle className="w-4 h-4 text-rose-600" /> Skill Gaps / Missing Criteria
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {application.fit_breakdown?.missing_skills?.length ? (
                       application.fit_breakdown.missing_skills.map((s, idx) => (
-                        <span key={idx} className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-rose-500/10 text-rose-300 border border-rose-500/20 flex items-center gap-1.5">
-                          <AlertCircle className="w-3.5 h-3.5 text-rose-400" /> {s}
+                        <span key={idx} className="px-3 py-1.5 text-xs font-semibold rounded-xl bg-rose-50 text-rose-800 border border-rose-200 flex items-center gap-1.5">
+                          <AlertCircle className="w-3.5 h-3.5 text-rose-600" /> {s}
                         </span>
                       ))
                     ) : (
-                      <span className="text-xs text-slate-400 italic">No significant missing skill requirements identified! Excellent alignment.</span>
+                      <span className="text-xs text-slate-500 italic">No significant missing skill requirements identified! Excellent alignment.</span>
                     )}
                   </div>
                 </div>
@@ -197,16 +197,16 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
 
               {/* Retrieved Vector Context Evidence */}
               {application.retrieved_context && application.retrieved_context.length > 0 && (
-                <div className="glass-panel p-5 rounded-2xl border border-slate-800/90 space-y-3">
-                  <h4 className="text-xs font-black text-indigo-400 uppercase tracking-wider flex items-center gap-2">
+                <div className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
+                  <h4 className="text-xs font-black text-indigo-600 uppercase tracking-wider flex items-center gap-2">
                     <Database className="w-4 h-4" /> Supabase pgvector Resume Evidence Chunks
                   </h4>
                   <div className="space-y-2.5">
                     {application.retrieved_context.map((chunk, idx) => (
-                      <div key={idx} className="bg-slate-900/90 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 space-y-1">
-                        <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 uppercase">
+                      <div key={idx} className="bg-slate-50 p-3.5 rounded-xl border border-slate-200 text-xs text-slate-700 space-y-1">
+                        <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 uppercase">
                           <span>[{chunk.category}]</span>
-                          <span className="text-indigo-400">Cosine Similarity: {(chunk.similarity || 0.88).toFixed(2)}</span>
+                          <span className="text-indigo-600">Cosine Similarity: {(chunk.similarity || 0.88).toFixed(2)}</span>
                         </div>
                         <p className="leading-relaxed font-sans">{chunk.content}</p>
                       </div>
@@ -221,17 +221,17 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           {activeTab === 'cover' && (
             <div className="space-y-4 animate-fadeIn">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-300">Edit Tailored Cover Letter (Markdown)</span>
+                <span className="text-xs font-bold text-slate-700">Edit Tailored Cover Letter (Markdown)</span>
                 
                 <div className="flex items-center gap-3">
-                  <span className="text-[11px] text-amber-400 font-semibold flex items-center gap-1 bg-amber-500/10 px-2.5 py-1 rounded-full border border-amber-500/20">
-                    <ShieldCheck className="w-3.5 h-3.5 text-amber-400" /> Zero-Hallucination Verified
+                  <span className="text-[11px] text-amber-800 font-semibold flex items-center gap-1 bg-amber-50 px-2.5 py-1 rounded-full border border-amber-200">
+                    <ShieldCheck className="w-3.5 h-3.5 text-amber-600" /> Zero-Hallucination Verified
                   </span>
                   <button
                     onClick={handleCopyCoverLetter}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all border border-slate-700"
+                    className="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-white hover:bg-slate-50 text-slate-700 text-xs font-bold transition-all border border-slate-200 shadow-2xs"
                   >
-                    {copiedLetter ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-sky-400" />}
+                    {copiedLetter ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-sky-600" />}
                     {copiedLetter ? 'Copied!' : 'Copy Letter'}
                   </button>
                 </div>
@@ -241,7 +241,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                 rows={16}
                 value={coverLetter}
                 onChange={(e) => setCoverLetter(e.target.value)}
-                className="w-full p-5 rounded-2xl bg-slate-900/90 border border-slate-700 text-slate-100 text-xs font-mono focus:outline-none focus:border-indigo-500 leading-relaxed shadow-inner"
+                className="w-full p-5 rounded-2xl bg-white border border-slate-300 text-slate-900 text-xs font-mono focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 leading-relaxed shadow-xs"
               />
             </div>
           )}
@@ -250,22 +250,22 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           {activeTab === 'bullets' && (
             <div className="space-y-4 animate-fadeIn">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-300">Master Resume Bullet Reframing (Before vs AI Tailored)</span>
-                <span className="text-[11px] text-slate-400 font-medium">Click tailored bullet text box to edit before approval</span>
+                <span className="text-xs font-bold text-slate-700">Master Resume Bullet Reframing (Before vs AI Tailored)</span>
+                <span className="text-[11px] text-slate-500 font-medium">Click tailored bullet text box to edit before approval</span>
               </div>
 
               {bullets.map((b, idx) => (
-                <div key={idx} className="glass-panel p-5 rounded-2xl border border-slate-800/90 space-y-3">
+                <div key={idx} className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs space-y-3">
                   <div>
-                    <span className="text-[10px] font-black text-rose-400 uppercase tracking-wider block mb-1">
+                    <span className="text-[10px] font-black text-rose-600 uppercase tracking-wider block mb-1">
                       Original Master Resume Bullet
                     </span>
-                    <p className="text-xs text-slate-400 bg-slate-900/90 p-3 rounded-xl border border-slate-800 font-sans">
+                    <p className="text-xs text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 font-sans">
                       {b.original}
                     </p>
                   </div>
                   <div>
-                    <span className="text-[10px] font-black text-emerald-400 uppercase tracking-wider block mb-1">
+                    <span className="text-[10px] font-black text-emerald-700 uppercase tracking-wider block mb-1">
                       Tailored Bullet (Reframed for Job Alignment)
                     </span>
                     <textarea
@@ -276,10 +276,10 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
                         next[idx].tailored = e.target.value;
                         setBullets(next);
                       }}
-                      className="w-full text-xs text-slate-100 bg-slate-900 p-3 rounded-xl border border-slate-700 focus:outline-none focus:border-indigo-500 font-sans font-medium leading-relaxed"
+                      className="w-full text-xs text-slate-900 bg-white p-3 rounded-xl border border-slate-300 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 font-sans font-medium leading-relaxed"
                     />
                   </div>
-                  <p className="text-[11px] text-indigo-300/90 italic font-sans">
+                  <p className="text-[11px] text-indigo-700 italic font-sans">
                     <strong>Rationale:</strong> {b.rationale}
                   </p>
                 </div>
@@ -302,11 +302,11 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
         </div>
 
         {/* Modal Action Bar Footer */}
-        <div className="p-6 border-t border-slate-800/90 bg-slate-900/90 flex items-center justify-between gap-4 shrink-0">
+        <div className="p-6 border-t border-slate-200 bg-slate-50 flex items-center justify-between gap-4 shrink-0">
           <button
             onClick={handleReject}
             disabled={isSubmitting}
-            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/20 text-xs font-extrabold transition-all"
+            className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 text-xs font-extrabold transition-all"
           >
             <XCircle className="w-4 h-4" /> Reject Application
           </button>
@@ -314,7 +314,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
           <div className="flex items-center gap-3">
             <button
               onClick={onClose}
-              className="px-4 py-2.5 rounded-xl text-slate-300 hover:text-white text-xs font-bold hover:bg-slate-800 transition-colors"
+              className="px-4 py-2.5 rounded-xl text-slate-600 hover:text-slate-900 text-xs font-bold hover:bg-slate-200/60 transition-colors"
             >
               Close
             </button>
@@ -322,7 +322,7 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
             <button
               onClick={handleApproveAndExecute}
               disabled={isSubmitting}
-              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white text-xs font-black shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-50 hover:scale-[1.02]"
+              className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-black shadow-lg shadow-emerald-500/20 transition-all disabled:opacity-50 hover:scale-[1.02]"
             >
               {isSubmitting ? (
                 <>Processing Execution...</>
@@ -339,4 +339,3 @@ export const ReviewModal: React.FC<ReviewModalProps> = ({
     </div>
   );
 };
-
